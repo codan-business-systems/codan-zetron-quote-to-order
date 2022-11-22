@@ -1,0 +1,57 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:l="sap.ui.layout">
+	
+	<Dialog title="{= ${objectView>/printDialogIcon} === 'sap-icon://print' ? 'Print' : 'Send' }" type="Message">
+		<content>
+			<form:SimpleForm
+				editable="true"
+				labelSpanL="3"
+				labelSpanM="3"
+				layout="ResponsiveGridLayout"
+				backgroundDesign="Transparent">
+				<form:content>
+					
+					<Label text="Layout Type"/>
+					<Select selectedKey="{objectView>/printDocumentType}">
+						<items>
+							<core:Item key="2" text="{i18n>printQuoteType2}"/>
+							<core:Item key="1" text="{i18n>printQuoteType1}"/>
+							<core:Item key="3" text="{i18n>printQuoteType3}"/>
+						</items>
+					</Select>
+					
+					<Label text="Price Type" />
+					<Select selectedKey="{objectView>/printPriceType}">
+						<items>
+							<core:Item key="2" text="{i18n>printPriceType2}"/>
+							<core:Item key="1" text="{i18n>printPriceType1}"/>
+						</items>
+					</Select> 
+					
+					<Label text="Discount Type" />
+					<Select selectedKey="{objectView>/printDiscType}" enabled="{= ${objectView>/printPriceType} === '1' }" >
+						<items>
+							<core:Item key="1" text="{i18n>printDiscType1}"/>
+							<core:Item key="2" text="{i18n>printDiscType2}"/>
+						</items>
+					</Select>
+					
+				</form:content>
+			</form:SimpleForm>
+		</content>
+		<beginButton>
+			<Button
+				icon="{objectView>/printDialogIcon}"
+				text="{objectView>/printDialogText}"
+				press="savePrintDialog"/>
+		</beginButton>
+		<endButton>
+			<Button
+				press="closePrintDialog"
+				text="Cancel"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

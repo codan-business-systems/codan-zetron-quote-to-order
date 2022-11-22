@@ -1,0 +1,115 @@
+<mvc:View
+	controllerName="dyflex.sd.sales.quotation.controller.Worklist"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:semantic="sap.m.semantic"
+	xmlns:footerbar="sap.ushell.ui.footerbar">
+
+	<semantic:FullscreenPage
+		id="page"
+		navButtonPress="onNavBack"
+		showNavButton="true"
+		title="{i18n>worklistViewTitle}">
+		<semantic:content>
+			
+			<IconTabBar
+				select="onFilterSelect"
+				selectedKey="{worklistView>/tabSelectedKey}"
+				class="sapUiResponsiveContentPadding">
+				<items>
+					<IconTabFilter
+						text="ALL"
+						key="ALL" />
+					<IconTabFilter
+						text="Draft"
+						key="DRAFT" />
+					<IconTabFilter
+						text="Open Quotes"
+						key="QUOTES" />
+				</items>
+				<content>
+					<Table
+						id="idWorklistTable"
+						width="auto"
+						items="{
+							path: '/ZI_SQuote_Header',
+							sorter: [
+								{ path: 'CreationDate', descending: true },
+								{ path: 'CreationTime', descending: true }
+							]
+						}"
+						noDataText="{worklistView>/tableNoDataText}"
+						busyIndicatorDelay="{worklistView>/tableBusyDelay}"
+						fixedLayout="false"
+						growing="true"
+						growingScrollToLoad="true"
+						updateFinished="onUpdateFinished">
+		
+						<headerToolbar>
+							<Toolbar>
+								<Title text="{worklistView>/worklistTableTitle}"/>
+								<ToolbarSpacer />
+								<SearchField
+									id="searchField"
+									placeholder="{i18n>worklistSearchTooltip}"
+									tooltip="{i18n>worklistSearchTooltip}"
+									search="onSearch"
+									width="35%">
+								</SearchField>
+								<Button icon="sap-icon://refresh" text="Refresh" press="onRefresh"/>
+								<Button icon="sap-icon://add" text="Create New Quote" press="onCreateQuote"/>
+							</Toolbar>
+						</headerToolbar>
+		
+						<columns>
+							<Column>
+								<Text text="Document No" />
+							</Column>
+							<Column>
+								<Text text="Customer" />
+							</Column>
+							<Column>
+								<Text text="Created By" />
+							</Column>
+							<Column>
+								<Text text="Contact Name" />
+							</Column>
+							<Column hAlign="Right">
+								<Text text="Total Value" />
+							</Column>
+							<Column>
+								<Text text="Status" />
+							</Column>
+						</columns>
+		
+						<items>
+							<ColumnListItem type="Navigation" press="onItemPress">
+								<cells>
+									<ObjectIdentifier title="{= ${OverallSDProcessStatus} === 'D' ? 'Draft' : ${SalesDocument} }"/>
+									
+									<ObjectIdentifier title="{CustomerName}" text="{Customer}" />
+										
+									<ObjectIdentifier title="{CreatedByUserName}" text="{ path: 'CreationDate', formatter: '.formatter.dateOutput' }" />
+										
+									<ObjectIdentifier text="{ContactName}" />
+									
+									<ObjectNumber
+										number="{
+											path: 'TotalNetAmount',
+											formatter: '.formatter.numberUnit'
+										}"
+										unit="{TransactionCurrency}"/>
+									
+									<ObjectIdentifier text="{ path: 'OverallSDProcessStatus', formatter: '.formatter.processStatus' }" />
+									
+								</cells>
+							</ColumnListItem>
+						</items>
+					</Table>
+				</content>
+			</IconTabBar>
+		</semantic:content>
+
+	</semantic:FullscreenPage>
+
+</mvc:View>

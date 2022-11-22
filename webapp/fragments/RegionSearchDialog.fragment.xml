@@ -1,0 +1,35 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<TableSelectDialog
+		noDataText="No Region Found"
+		title="Search for Region"
+		contentWidth="15em"
+		search="searchRegion"
+		confirm="closeRegionDialog"
+		growing="false"
+		items="{
+			path: 'regions>/',
+			sorter: [
+				{ path: 'name', descending: false }
+			]
+		}">
+		<StandardListItem
+			title="{regions>name}"
+			info="{regions>key}"
+			type="Active" />
+		<columns>
+			<Column />
+		</columns>
+		<ColumnListItem>
+			<cells>
+				<ObjectIdentifier text="{regions>name}  ({regions>key})" class="sapUiTinyMarginTopBottom">
+					<customData>
+						<core:CustomData key="Region"	  value="{regions>key}"  />
+						<core:CustomData key="RegionText" value="{regions>name}" />
+					</customData>
+				</ObjectIdentifier>
+			</cells>
+		</ColumnListItem>
+	</TableSelectDialog>
+</core:FragmentDefinition>

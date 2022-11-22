@@ -1,0 +1,31 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<TableSelectDialog
+		noDataText="No Country Found"
+		title="Search for Country"
+		contentWidth="15em"
+		search="searchCountry"
+		confirm="closeCountryDialog"
+		growing="false"
+		items="{
+			path: 'countries>/',
+			sorter: [
+				{ path: 'name', descending: false }
+			]
+		}">
+		<columns>
+			<Column />
+		</columns>
+		<ColumnListItem>
+			<cells>
+				<ObjectIdentifier text="{countries>name}  ({countries>key})" class="sapUiTinyMarginTopBottom">
+					<customData>
+						<core:CustomData key="Country"	   value="{countries>key}"  />
+						<core:CustomData key="CountryText" value="{countries>name}" />
+					</customData>
+				</ObjectIdentifier>
+			</cells>
+		</ColumnListItem>
+	</TableSelectDialog>
+</core:FragmentDefinition>

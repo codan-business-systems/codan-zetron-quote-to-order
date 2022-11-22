@@ -1,0 +1,70 @@
+<mvc:View
+	controllerName="dyflex.sd.sales.quotation.controller.Object"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:semantic="sap.m.semantic"
+	xmlns:footerbar="sap.ushell.ui.footerbar"
+	xmlns:core="sap.ui.core">
+
+	<semantic:DetailPage
+		navButtonPress="onNavBack"
+		showNavButton="true"
+		title="{objectView>/objectTitle}"
+		busy="{objectView>/busy}"
+		busyIndicatorDelay="{objectView>/delay}">
+
+		<semantic:content>
+			<Wizard id="quoteWiz">
+				<WizardStep id="stepCustomerDetail" validated="{objectView>/validated/customer}" title="{i18n>wizCustomerDetail}">
+					<core:Fragment fragmentName="dyflex.sd.sales.quotation.fragments.CustomerWizardStep" type="XML"/>
+				</WizardStep>
+				<WizardStep id="stepSelectPackages" validated="{objectView>/validated/selectPackage}" title="{i18n>wizSelectPackages}">
+					<core:Fragment fragmentName="dyflex.sd.sales.quotation.fragments.SelectProductWizardStep" type="XML"/>
+				</WizardStep>
+				<WizardStep id="stepConfigurePackage" validated="{objectView>/validated/configurePackage}" title="{i18n>wizConfigurePackage}">
+					<core:Fragment fragmentName="dyflex.sd.sales.quotation.fragments.ConfigureProductWizardStep" type="XML"/>
+				</WizardStep>
+				<WizardStep id="stepAddOptions" validated="{objectView>/validated/addOptions}" title="{i18n>wizReview}">
+					<core:Fragment fragmentName="dyflex.sd.sales.quotation.fragments.ReviewWizardStep" type="XML"/>
+				</WizardStep>
+			</Wizard>
+ 		</semantic:content>
+ 		
+		<semantic:customFooterContent>
+			
+			<Button
+				text="{= ${salesQuote>/EmailToContact} || ${salesQuote>/EmailToMyself} ? 'Save and Send'    : 'Save' }"
+				icon="{= ${salesQuote>/EmailToContact} || ${salesQuote>/EmailToMyself} ? 'sap-icon://email' : 'sap-icon://save' }"
+				type="Emphasized"
+				press="onSaveQuote"
+				enabled="{objectView>/saveEnabled}"
+				visible="{objectView>/editable}" />
+			
+			<Button
+				text="Save and Print"
+				icon="sap-icon://print"
+				type="Emphasized"
+				press="onSavePrint"
+				enabled="{objectView>/saveEnabled}"
+				visible="{objectView>/editable}" />
+				
+			<Button
+				text="Save as Draft"
+				press="onSaveAsDraft"
+				enabled="{objectView>/saveEnabled}"
+				visible="{objectView>/editable}"/>
+			
+			<Button
+				text="Delete Draft"
+				type="Reject"
+				press="onDeleteDraft"
+				visible="{= ${salesQuote>/SalesDocument} !== '' &amp;&amp; ${objectView>/editable} }"/>
+			
+			<Button text="Cancel" press="onCancel" visible="{objectView>/editable}"/>
+			<Button text="{i18n>btnCopyQuote}" press="onCopyQuote" type="Accept" visible="{objectView>/showCopyButton}"/>
+			
+		</semantic:customFooterContent>
+
+	</semantic:DetailPage>
+
+</mvc:View>

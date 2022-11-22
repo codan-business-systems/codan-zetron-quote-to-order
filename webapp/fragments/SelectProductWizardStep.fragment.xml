@@ -1,0 +1,179 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:l="sap.ui.layout">
+	
+	<List id="configurePackageList"
+		items="{
+			path: 'salesQuote>/to_PriceSheet/to_Category/results',
+			sorter: [
+				{ path: 'Sequence', descending: false }
+			]
+		}">
+		<items>
+			<CustomListItem>
+				
+				<Panel
+					expandable="true"
+					expanded="false"
+					visible="{
+							parts: [
+								{ path: 'salesQuote>to_Parts/results' },
+								{ path: 'salesQuote>Adhoc' }
+							],
+							formatter: '.formatter.checkCategoryVisible'
+					}" >
+					<headerToolbar class="expandCollapseToolbar">
+						<Toolbar>
+							<ObjectHeader
+								condensed="true"
+								title="{salesQuote>Description}"
+								class="zProductNoWidth" />
+							<ToolbarSpacer />
+							<Button
+								icon="sap-icon://add"
+								text="Add Item"
+								press="showAdhocMaterialDialog(${salesQuote>Category})"
+								enabled="{objectView>/editable}"
+								visible="{salesQuote>Adhoc}" />
+						</Toolbar>
+					</headerToolbar>
+					<infoToolbar>
+						<Toolbar>
+							<Toolbar class="configurePackageInfoToolbar">
+								<CheckBox
+									selected="{salesQuote>LTxtDefault}"
+									text="Show Category Long Text"
+									editable="{objectView>/editable}"/>
+								<core:Icon
+									src="sap-icon://edit-outside"
+									alt="Show Category Long Text"
+									press="onShowLongTextDialog"
+									class="itemLongTextIcon"
+									color="{= !${salesQuote>LongText} ? '#f70505' : '#08fb08' }"/>
+								<customData>
+									<core:CustomData key="TextType" value="SelectCategory" />
+								</customData>
+							</Toolbar>
+						</Toolbar>
+					</infoToolbar>
+					<content>
+						<Table
+							id="tempProductsTable"
+							items="{
+								path: 'salesQuote>to_Parts/results',
+								sorter: [
+									{ path: 'Sequence', descending: false }
+								],
+								templateShareable: true
+							}"
+							class="sapUiSmallMarginBottom"
+							updateFinished="configPackageTableUpdateFinished"
+							width="auto">
+							<columns>
+								<Column width="12%">
+									<Text text="Part" />
+								</Column>
+								<Column width="auto">
+									<Text text="Description" />
+								</Column>
+								<Column width="11%" hAlign="Center">
+									<Text text="General Text" />
+								</Column>
+								<Column width="11%" hAlign="Center">
+									<Text text="Config Text" />
+								</Column>
+								<Column width="17%" hAlign="Center">
+									<Text text="Quantity" />
+								</Column>
+								<Column width="12%" hAlign="Center">
+									<Text text="Discount" />
+								</Column>
+							</columns>
+							<items>
+								<ColumnListItem type="Inactive" visible="{= !${salesQuote>Excluded} }" >
+									
+									<ObjectIdentifier title="{salesQuote>Material}"/>
+									
+									<Text text="{salesQuote>MaterialDesc}"/>
+										
+									<HBox justifyContent="Center">
+										<CheckBox
+											selected="{salesQuote>GTxtDefault}"
+											tooltip="Show General Text"
+											editable="{objectView>/editable}"/>
+										<core:Icon
+											src="sap-icon://edit-outside"
+											alt="Edit General Text"
+											press="onShowLongTextDialog"
+											class="itemLongTextIcon"
+											color="{= !${salesQuote>GeneralText} ? 'red' : 'green' }"/>
+										<customData>
+											<core:CustomData key="TextType" value="SelectGeneral" />
+											<core:CustomData key="ResetAdhoc" value="Yes" />
+										</customData>
+									</HBox>
+									
+									<HBox justifyContent="Center">
+										<CheckBox
+											selected="{salesQuote>CTxtDefault}"
+											tooltip="Show Config Text"
+											editable="{objectView>/editable}"/>
+										<core:Icon
+											src="sap-icon://edit-outside"
+											alt="Edit Config Text"
+											press="onShowLongTextDialog"
+											class="itemLongTextIcon"
+											color="{= !${salesQuote>ConfigText} ? 'red' : 'green' }"/>
+										<customData>
+											<core:CustomData key="TextType" value="SelectConfig" />
+											<core:CustomData key="ResetAdhoc" value="Yes" />
+										</customData>
+									</HBox>
+									
+									<HBox>
+										<Button
+											icon="sap-icon://sys-minus"
+											tooltip="Decrease Quantity"
+											press="onProductQtyMinus"
+											class="btnQuantityModifier"
+											visible="{objectView>/editable}"/>
+										
+										<Input
+											value="{salesQuote>OrderQuantity}"
+											change="onSelectProductOrderQtyChange"
+											editable="{objectView>/editable}"
+											type="Number"/>
+										
+										<Button
+											icon="sap-icon://sys-add"
+											tooltip="Increase Quantity"
+											press="onProductQtyAdd"
+											class="btnQuantityModifier"
+											visible="{objectView>/editable}"/>
+									</HBox>
+									
+									<HBox>
+										<Input
+											value="{salesQuote>Discount}"
+											change="onSelectProductDiscountChange"
+											editable="{objectView>/editable}"
+											visible="{= ${salesQuote>OrderQuantity} > 0 ? true : false }"
+											type="Number"/>
+										<Input
+											editable="false"
+											visible="{= ${salesQuote>OrderQuantity} > 0 ? false : true }"/>
+									</HBox>
+									
+								</ColumnListItem>
+							</items>
+						</Table>
+					</content>
+				</Panel>
+				
+			</CustomListItem>
+		</items>
+	</List>
+	
+</core:FragmentDefinition>

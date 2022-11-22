@@ -1,0 +1,15 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<SelectDialog
+		noDataText="No Adhoc Materials Found"
+		title="Search for Adhoc Material"
+		search="searchAdhocMaterial"
+		confirm="closeAdhocMaterialDialog"
+		items="{ path: '/ZI_SQuote_AdhocMaterial' }" >
+		<StandardListItem
+			title="{Material}"
+			description="{MaterialDesc}"
+			type="Active" />
+	</SelectDialog>
+</core:FragmentDefinition>

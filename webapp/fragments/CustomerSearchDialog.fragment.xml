@@ -1,0 +1,41 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<TableSelectDialog
+		noDataText="No Customers Found"
+		title="Search for Customer"
+		contentWidth="15em"
+		search="searchCustomers"
+		confirm="closeCustomerDialog"
+		items="{ path: '/ZI_SQuote_Customer', 
+				 filters: [{ path: 'OneTimeAcct', operator: 'EQ', value1: false } ]
+		}" >
+		<columns>
+			<Column />
+		</columns>
+		<ColumnListItem>
+			<cells>
+				<ObjectIdentifier
+					class="sapUiTinyMarginTopBottom"
+					title="{Customer} {CustomerSearchName}"
+					text="{PostCode}, {City}, {Region}">
+					<customData>
+						<core:CustomData key="Customer"	    value="{Customer}" />
+						<core:CustomData key="CustomerName" value="{CustomerName}" />
+						<core:CustomData key="Street"	    value="{Street}" />
+						<core:CustomData key="City" 	    value="{City}" />
+						<core:CustomData key="Region"	    value="{Region}" />
+						<core:CustomData key="RegionText"   value="{RegionText}" />
+						<core:CustomData key="Country"	    value="{Country}" />
+						<core:CustomData key="CountryText"  value="{CountryText}" />
+						<core:CustomData key="PostCode"     value="{PostCode}" />
+						<core:CustomData key="ContactName"  value="{ContactName}" />
+						<core:CustomData key="Currency"     value="{Currency}" />
+						<core:CustomData key="Incoterms1"   value="{Incoterms1}" />
+						<core:CustomData key="Incoterms2"   value="{Incoterms2}" />
+					</customData>
+				</ObjectIdentifier>
+			</cells>
+		</ColumnListItem>
+	</TableSelectDialog>
+</core:FragmentDefinition>

@@ -1,0 +1,40 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:l="sap.ui.layout">
+	
+	<!-- Exclude Optional Items in the top list as they are not included in Grand Total -->
+	<List
+		items="{ 
+			path: 'objectView>/selectedProducts', 
+			filters: [{ path: 'Category', operator: 'NE', value1: 'ZQ' } ] 
+		}">
+		<items>
+			<core:Fragment fragmentName="dyflex.sd.sales.quotation.fragments.ConfigureProductItem" type="XML"/>
+		</items>
+	</List>
+	<Panel expandable="false" expanded="true">
+		<headerToolbar>
+			<Toolbar height="4em">
+				<ObjectHeader
+					condensed="true"
+					number="Total for all items: { path: 'objectView>/grandTotal', formatter: '.formatter.numberUnit' }"
+					numberUnit="{salesQuote>/TransactionCurrency}"
+					visible="true"
+					class="zProductHeader"/>
+			</Toolbar>
+		</headerToolbar>
+	</Panel>
+	<!-- Show Optional Items at the bottom as they are not included in Grand Total -->
+	<List
+		visible="{objectView>/showOptional}"
+		items="{ 
+			path: 'objectView>/selectedProducts', 
+			filters: [{ path: 'Category', operator: 'EQ', value1: 'ZQ' } ] 
+		}">
+		<items>
+			<core:Fragment fragmentName="dyflex.sd.sales.quotation.fragments.ConfigureProductItem" type="XML"/>
+		</items>
+	</List>
+</core:FragmentDefinition>

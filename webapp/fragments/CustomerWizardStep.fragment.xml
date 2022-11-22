@@ -1,0 +1,305 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:l="sap.ui.layout">
+	
+	<form:SimpleForm
+		editable="true"
+		id="createCustomerForm"
+		labelSpanL="3"
+		labelSpanM="3"
+		layout="ResponsiveGridLayout"
+		backgroundDesign="Transparent">
+		<form:content>
+			
+			<!-- Customer Record -->
+			<core:Title id="customerMasterTitle" text="{i18n>customerMasterTitle}"/>
+			
+			<Label id="lblOneTimeCustomer" labelFor="chkOneTimeCustomer" text="{i18n>chkOneTimeCustomer}">
+				<layoutData>
+					<l:GridData span="L4 M4 S12"/>
+				</layoutData>
+			</Label>
+			<Switch
+				id="chkOneTimeCustomer"
+				state="{salesQuote>/OneTimeAcct}"
+				type="AcceptReject"
+				change="oneTimeChanged"
+				enabled="{objectView>/editable}"/>
+			
+			<Label id="lblCustomerNumber" labelFor="customerNumber" text="{i18n>lblCustomerNumber}">
+				<layoutData>
+					<l:GridData span="L4 M4 S12"/>
+				</layoutData>
+			</Label>
+			<Input
+				id="customerNumber"
+				showValueHelp="true"
+				valueHelpOnly="true"
+				valueHelpRequest="showCustomerDialog"
+				value="{salesQuote>/Customer}"
+				enabled="{= !${salesQuote>/OneTimeAcct} }"
+				editable="{objectView>/editable}"
+				maxLength="10"
+				width="16em"
+				valueState="{= ${salesQuote>/OneTimeAcct} ? 'None' : ${objectView>/valueState/customerNo} }"
+				valueStateText="{objectView>/valueStateText/customerNo}" />
+				
+			<Label id="lblCurrency" labelFor="currency" text="{i18n>lblCurrency}" required="true">
+				<layoutData>
+					<l:GridData span="L4 M4 S12"/>
+				</layoutData>
+			</Label>
+			<Select
+				id="currency"
+				items="{ path: '/ZI_SQuote_Parameters', filters: [{ path: 'Name', operator: 'StartsWith', value1: 'CURRENCY_' } ] }"
+				selectedKey="{salesQuote>/TransactionCurrency}" 
+				change="onCurrencyChange"
+				width="6em"
+				editable="{objectView>/editable}">
+				<core:Item key="{Value}" text="{Value}"/>
+			</Select>
+			
+			<Label id="lblInco1" labelFor="inco1" text="{i18n>lblInco1}" required="true">
+				<layoutData>
+					<l:GridData span="L4 M4 S12"/>
+				</layoutData>
+			</Label>
+			<Select
+				id="inco1"
+				items="{ path: '/ZI_SQuote_Parameters', filters: [{ path: 'Name', operator: 'StartsWith', value1: 'INCOTERMS_' } ] }"
+				selectedKey="{salesQuote>/Incoterms1}"
+				width="6em"
+				editable="{objectView>/editable}">
+				<core:Item key="{Value}" text="{Value}"/>
+			</Select>
+			
+			<Label id="lblInco2" labelFor="inco2" text="{i18n>lblInco2}">
+				<layoutData>
+					<l:GridData span="L4 M4 S12"/>
+				</layoutData>
+			</Label>
+			<Input
+				id="inco2"
+				value="{salesQuote>/Incoterms2}"
+				maxLength="28"
+				editable="{objectView>/editable}"/>
+				
+			<!-- Address -->
+			<core:Title id="addressTitle" text="{i18n>addressTitle}"/>
+			
+			<Label id="lblCompanyName" labelFor="companyName" text="{i18n>lblCompanyName}" required="true"/>
+			<Input
+				id="companyName"
+				editable="{= ${salesQuote>/OneTimeAcct} &amp;&amp; ${objectView>/editable} }"
+				value="{salesQuote>/CustomerName}"
+				liveChange="checkMandatoryCustFields"
+				valueState="{= !${salesQuote>/OneTimeAcct} || ${salesQuote>/CustomerName} ? 'None' : 'Error' }"
+				valueStateText="Company Name is mandatory"
+				valueLiveUpdate="true" />
+			
+			<Label id="lblStreet" labelFor="street" text="{i18n>lblStreet}" required="true"/>
+			<Input
+				id="street"
+				editable="{= ${salesQuote>/OneTimeAcct} &amp;&amp; ${objectView>/editable} }"
+				value="{salesQuote>/Street}"
+				valueState="{= !${salesQuote>/OneTimeAcct} || ${salesQuote>/Street} ? 'None' : 'Error' }"
+				valueStateText="A valid street is required"/>
+				
+			<Label id="lblCountry" labelFor="country" text="{i18n>lblCountry}" required="true"/>
+			<Input
+				id="country"
+				editable="{= ${salesQuote>/OneTimeAcct} &amp;&amp; ${objectView>/editable} }"
+				value="{salesQuote>/CountryText}"
+				showValueHelp="true"
+				valueHelpOnly="true"
+				valueHelpRequest="showCountryDialog"
+				valueState="{= !${salesQuote>/OneTimeAcct} || ${salesQuote>/Country} ? 'None' : 'Error' }"
+				valueStateText="A valid country is required" />
+			
+			<Label id="lblCity" labelFor="city" text="{i18n>lblCity}" required="true"/>
+			<Input
+				id="city"
+				editable="{= ${salesQuote>/OneTimeAcct} &amp;&amp; ${objectView>/editable} }"
+				value="{salesQuote>/City}"
+				valueState="{= !${salesQuote>/OneTimeAcct} || ${salesQuote>/City} ? 'None' : 'Error' }"
+				valueStateText="A valid city is required"/>
+			
+			<Label id="lblRegion" labelFor="region" text="{i18n>lblRegion}" required="true" />
+			<Input
+				id="region"
+				editable="{= ${salesQuote>/OneTimeAcct} &amp;&amp; ${objectView>/editable} }"
+				value="{salesQuote>/RegionText}"
+				showValueHelp="true"
+				valueHelpOnly="true"
+				valueHelpRequest="showRegionDialog"
+				valueState="{objectView>/valueState/region}"
+				valueStateText="{objectView>/valueStateText/region}" />
+			
+			<Label id="lblPostcode" labelFor="postcode" text="{i18n>lblPostcode}" required="true"/>
+			<Input
+				id="postcode"
+				editable="{= ${salesQuote>/OneTimeAcct} &amp;&amp; ${objectView>/editable} }"
+				value="{salesQuote>/PostCode}"
+				valueState="{= !${salesQuote>/OneTimeAcct} || ${salesQuote>/PostCode} ? 'None' : 'Error' }"
+				valueStateText="A valid postcode is required"
+				width="8em"
+				liveChange="checkMandatoryCustFields"
+				valueLiveUpdate="true" />
+				
+			<!-- Pricing -->
+			<core:Title text="Pricing"/>
+			
+			<Label text="Price Sheet" required="true">
+				<layoutData>
+					<l:GridData span="L4 M4 S12"/>
+				</layoutData>
+			</Label>
+			<ComboBox
+				selectedKey="{salesQuote>/PriceSheet}"
+				selectionChange="onPriceSheetChange"
+				editable="{objectView>/editable}"
+				items="{
+					path: '/ZI_SQuote_PriceSheet',	
+					sorter: { path: 'PriceSheet' }
+				}">
+				<core:ListItem key="{PriceSheet}" text="{PriceSheet} - {Description}" />	
+			</ComboBox>
+			
+			<Label text="Pricelist" required="true">
+				<layoutData>
+					<l:GridData span="L4 M4 S12"/>
+				</layoutData>
+			</Label>
+			<ComboBox
+				selectedKey="{salesQuote>/PriceList}"
+				selectionChange="onPriceListChange"
+				editable="{objectView>/editable}"
+				items="{
+					path: '/ZI_SQuote_PriceList',	
+					sorter: { path: 'PriceList' }
+				}">
+				<core:ListItem key="{PriceList}" text="{PriceList} - {Description}" />	
+			</ComboBox>
+			
+			<Label text="End User" required="true">
+				<layoutData>
+					<l:GridData span="L4 M4 S12"/>
+				</layoutData>
+			</Label>
+			<ComboBox
+				selectedKey="{salesQuote>/EndUser}"
+				selectionChange="onEndUserChange"
+				editable="{objectView>/editable}"
+				items="{
+					path: 'endUserModel>/d/results',	
+					sorter: { path: 'PartnerNo' }
+				}">
+				<core:ListItem key="{endUserModel>PartnerNo}" text="{endUserModel>PartnerNo} - {endUserModel>PartnerName}" />	
+			</ComboBox>
+			
+			<Label text="System ID">
+				<layoutData>
+					<l:GridData span="L4 M4 S12"/>
+				</layoutData>
+			</Label>
+			<ComboBox
+				selectedKey="{salesQuote>/SystemID}"
+				selectionChange="onSystemIdChange"
+				editable="{objectView>/editable}"
+				items="{
+					path: 'funcLocModel>/d/results',	
+					sorter: { path: 'FuncLoc' }
+				}">
+				<core:ListItem key="{funcLocModel>FuncLoc}" text="{funcLocModel>FuncLoc}" />	
+			</ComboBox>
+			
+			<Label text="Create New System ID">
+				<layoutData>
+					<l:GridData span="L4 M4 S12"/>
+				</layoutData>
+			</Label>
+			<Switch
+				state="{salesQuote>/SysIDNotReq}"
+				change="onCreateNewSystemIdChange"
+				type="AcceptReject"
+				enabled="{objectView>/editable}"/>
+				
+			<!-- Contact -->
+			<core:Title text="Contact"/>
+			
+			<Label text="Contact Name" />
+			<ComboBox
+				selectedKey="{salesQuote>/ContactPerson}"
+				selectionChange="onContactPersonChange"
+				editable="{objectView>/editable}"
+				items="{
+					path: 'contactModel>/d/results',	
+					sorter: { path: 'ContactName' }
+				}">
+				<core:ListItem key="{contactModel>ContactPerson}" text="{contactModel>ContactName}" />
+			</ComboBox>
+			
+			<Label text="Address" />
+			<Text text="{salesQuote>/ContactAddress}" />
+			
+			<Label text="Telephone" />
+			<Text text="{salesQuote>/ContactPhone}" />
+			
+			<Label text="Email" />
+			<Text text="{salesQuote>/ContactEmail}" />
+			
+			<core:Title text=""/>
+			
+			<VBox>
+				<Label text="Price Sheet Text:" />
+				<TextArea
+					width="100%"
+					placeholder="Price Sheet Text"
+					rows="4"
+					valueLiveUpdate="true"
+					showExceededText="true"
+					maxLength="2048"
+					value="{salesQuote>/LongText1}"
+					editable="{objectView>/editable}" />
+				
+				<Label text="Adhoc Text:" />
+				<TextArea
+					width="100%"
+					placeholder="Adhoc Text"
+					rows="4"
+					valueLiveUpdate="true"
+					showExceededText="true"
+					maxLength="2048"
+					value="{salesQuote>/LongText3}"
+					editable="{objectView>/editable}" />
+			</VBox>
+				
+			<core:Title text=""/>
+			
+			<VBox>
+				<Label text="Customer Shipping Text:" />
+				<TextArea
+					width="100%"
+					placeholder="Customer Shipping Text"
+					rows="4"
+					valueLiveUpdate="true"
+					showExceededText="true"
+					maxLength="2048"
+					value="{salesQuote>/LongText2}"
+					editable="{objectView>/editable}" />
+			</VBox>
+			
+			<Label text="Discount" />
+			<Input
+				value="{salesQuote>/CustomDiscount}"
+				change="onHeaderDiscountChange"
+				type="Number"
+				width="8em"
+				editable="{objectView>/editable}" />
+			
+		</form:content>
+	</form:SimpleForm>
+	
+</core:FragmentDefinition>

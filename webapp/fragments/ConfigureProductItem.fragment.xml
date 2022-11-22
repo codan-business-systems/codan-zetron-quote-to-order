@@ -1,0 +1,143 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:l="sap.ui.layout">
+	
+	<CustomListItem>
+		<Panel
+			expandable="true"
+			expanded="false">
+	        <customData>
+	            <core:CustomData 
+	                key="product-class" 
+	                value="{ path: 'objectView>Category', formatter: '.formatter.categoryHighlight' }" 
+	                writeToDom="true"/>
+	        </customData>
+			<headerToolbar>
+				<Toolbar class="expandCollapseToolbar" height="auto">
+					<ObjectHeader
+						condensed="true"
+						title="{objectView>MaterialDesc} ({objectView>Material}) [Quantity: {objectView>OrderQuantity}]"
+						number="Subtotal: { path: 'objectView>NetAmount', formatter: '.formatter.numberUnit' }"
+						numberUnit="{salesQuote>/TransactionCurrency}"
+						visible="true"
+						class="zProductHeader"/>
+				</Toolbar>
+			</headerToolbar>
+			<content>
+				<Table
+					items="{ 
+						path: 'objectView>to_PartsBom/results', 
+						templateShareable: true
+					}"
+					class="configPackageTable"
+					updateFinished="configPackageTableUpdateFinished"
+					width="auto"
+					mode="{= ${objectView>/editable} ? 'Delete' : 'None' }"
+					delete="onDeleteItem">
+					<columns>
+						<Column width="9%">
+							<Text text="Part" />
+						</Column>
+						<Column width="20%">
+							<Text text="Description" />
+						</Column>
+						<Column width="3em">
+							<Text text="PL" />
+						</Column>
+						<Column width="9%" hAlign="Center">
+							<Text text="General Text" />
+						</Column>
+						<Column width="9%" hAlign="Center">
+							<Text text="Config Text" />
+						</Column>
+						<Column width="8%">
+							<Text text="{i18n>colHdrQuantity}" />
+						</Column>
+						<Column width="7em">
+							<Text text="{i18n>colHdrDiscount}" />
+						</Column>
+						<Column width="4em" hAlign="Center">
+							<Text text="{i18n>colHdrFreeItem}" />
+						</Column>
+						<Column hAlign="End">
+							<Text text="{i18n>colHdrUnitPrice}" />
+						</Column>
+						<Column hAlign="End">
+							<Text text="{i18n>colHdrDiscUnitPrice}" />
+						</Column>
+						<Column hAlign="End">
+							<Text text="{i18n>colHdrNetPrice}" />
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem visible="{= !${objectView>Deleted} }">
+							<ObjectIdentifier title="{objectView>Material}"/>
+							<Text text="{objectView>MaterialDesc}"/>
+							<Text text="{objectView>PriceList}"/>
+							
+							<HBox justifyContent="Center">
+								<CheckBox
+									selected="{objectView>GTxtDefault}"
+									tooltip="Show General Text"
+									editable="{objectView>/editable}"/>
+								<core:Icon
+									src="sap-icon://edit-outside"
+									alt="Edit General Text"
+									press="onShowLongTextDialog"
+									class="itemLongTextIcon"
+									color="{= !${objectView>GeneralText} ? 'red' : 'green' }"/>
+								<customData>
+									<core:CustomData key="TextType" value="ConfigGeneral" />
+								</customData>
+							</HBox>
+							
+							<HBox justifyContent="Center">
+								<CheckBox
+									selected="{objectView>CTxtDefault}"
+									tooltip="Show Config Text"
+									editable="{objectView>/editable}"/>
+								<core:Icon
+									src="sap-icon://edit-outside"
+									alt="Edit Config Text"
+									press="onShowLongTextDialog"
+									class="itemLongTextIcon"
+									color="{= !${objectView>ConfigText} ? 'red' : 'green' }"/>
+								<customData>
+									<core:CustomData key="TextType" value="ConfigConfig" />
+								</customData>
+							</HBox>
+							
+							<Text text="{objectView>OrderQuantity}"/>
+							
+							<Input
+								value="{objectView>Discount}"
+								type="Number"
+								change="onDiscountChange"
+								enabled="{= !${objectView>FreeItem} }"
+								editable="{objectView>/editable}"/>
+							
+							<Switch
+								type="AcceptReject"
+								state="{objectView>FreeItem}"
+								change="onSetFreeItem"
+								enabled="{= !${objectView>focItem} &amp;&amp; ${objectView>/editable} }"/>
+							
+							<Text text="{ path: 'objectView>UnitPrice', formatter: '.formatter.numberUnit' }" />
+							<Text text="{ path: 'objectView>NetPrice', formatter: '.formatter.numberUnit' }" />
+							<Text text="{ path: 'objectView>NetAmount', formatter: '.formatter.numberUnit' }" />
+							
+						</ColumnListItem>
+					</items>
+				</Table>
+				<ObjectHeader
+					condensed="true"
+					number="Subtotal: { path: 'objectView>NetAmount', formatter: '.formatter.numberUnit' }"
+					numberUnit="{salesQuote>/TransactionCurrency}"
+					class="zProductNoWidth" />
+			</content>
+		</Panel>
+	</CustomListItem>
+	
+</core:FragmentDefinition>

@@ -1,0 +1,45 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:l="sap.ui.layout"
+	class="sapUiSizeCompact">
+	
+	<Dialog title="Edit Long Text" type="Message" afterClose="setLongTextFromDialog">
+		
+		<l:HorizontalLayout class="sapUiSmallMarginBottom">
+			<l:VerticalLayout width="120px">
+				<Text text="{= ${objectView>/currentItem/Material} ? 'Material: ' : 'Category: ' } "/>
+				<Text text="Description: "/>
+			</l:VerticalLayout>
+			<l:VerticalLayout>
+				<Text text="{= ${objectView>/currentItem/Material} ? ${objectView>/currentItem/Material}     : ${objectView>/currentItem/Category} }"/>
+				<Text text="{= ${objectView>/currentItem/Material} ? ${objectView>/currentItem/MaterialDesc} : ${objectView>/currentItem/Description} }"/>
+			</l:VerticalLayout>
+		</l:HorizontalLayout>
+		
+		<TextArea
+			width="100%"
+			placeholder="Enter long text here"
+			rows="5"
+			valueLiveUpdate="true"
+			showExceededText="true"
+			maxLength="1024"
+			value="{objectView>/currentLongText}"
+			editable="{objectView>/editable}" />
+		
+		<beginButton>
+			<Button
+				text="OK"
+				press="onSaveLongTextDialog"
+				enabled="{= ${objectView>/currentLongText}.length > 1024 ? false : true }"
+				visible="{objectView>/editable}"/>
+		</beginButton>
+		<endButton>
+			<Button
+				text="Cancel"
+				press="onCloseLongTextDialog" />
+		</endButton>
+		
+	</Dialog>
+	
+</core:FragmentDefinition>

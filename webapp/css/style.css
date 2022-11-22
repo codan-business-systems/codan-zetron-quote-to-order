@@ -1,0 +1,35 @@
+.sapUiFormContainerTitle>.sapUiFormTitle {
+	font-weight: bold;
+}
+
+.btnQuantityModifier>.sapMBtnInner {
+	border: 0px;
+	width: 2em;
+	background-color: transparent;
+	background-image: initial;
+}
+
+.sapUiSizeCompact .sapMTB {
+	height: 2.5rem;
+}
+
+.itemLongTextIcon {
+	padding-top: 0.4em;
+}
+
+.zProductHeader {
+	background-color: transparent !important;
+	width: 98%;	
+}
+
+.zProductNoWidth {
+	background-color: transparent !important;
+}
+
+[data-product-class=grey] {
+ background-color: #E8E8E8 !important
+}
+
+[data-product-class=blue] {
+ background-color: #e7f5fe !important
+}
